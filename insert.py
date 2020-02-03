@@ -21,6 +21,15 @@ def update():
     data.get_plantes(mycursor)
     datab.commit()
 
+def search_plantes():
+    search=input("quelle plante voulez vous ?")
+    mycursor= datab.cursor()
+    sql = "SELECT * FROM plante WHERE nom = '{}' ".format(search)
+    mycursor.execute(sql)
+    myresult = mycursor.fetchall()
+    for x in myresult:
+        print(x)
+
 
 def del_plantes():
     supp_id = input("quelle est le numero a supprimer ? ")
@@ -33,7 +42,7 @@ def main():
 
     while True:
 
-        choix_utilisateur=input("\n que voulez vous faire ? A pour Ajouter , M pour modifier , L pour lister ,Q pour quitter : ").upper()
+        choix_utilisateur=input("\n que voulez vous faire ?  L pour lister ,A pour Ajouter , M pour modifier ,S pour supprimer ,Q pour quitter : ").upper()
 
         if choix_utilisateur == "A":
             ajout_plante()
@@ -47,6 +56,8 @@ def main():
         elif choix_utilisateur == "S":
             del_plantes()
 
+        elif choix_utilisateur == "R":
+            search_plantes()
         elif choix_utilisateur == "Q":
              break
 
