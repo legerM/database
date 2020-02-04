@@ -7,13 +7,12 @@ def ajout_plante():
     newindication = input("quel indication preconisez vous ? ")
     newutilisation = input("quelle partie est utile ? ")
     newprice = input("quel est le prix de cette plante ? ")
-
-    sql = "INSERT INTO plante (id,nom,indication,partie_utilisee,prix) VALUES ('{}','{}','{}','{}','{}')".format(newid, newname,
-                                                                                                   newindication,
-                                                                                                   newutilisation, newprice)
-    mycursor.execute(sql)
+    famille_id =input("quels est le famille id ?")
+    sql = "INSERT INTO plante (id,nom,indication,partie_utilisee,prix,famille_id) VALUES (%s, %s, %s, %s, %s, %s)"
+    mycursor.execute(sql,(newid, newname,newindication,newutilisation, newprice, famille_id))
     data.get_plantes(mycursor)
     datab.commit()
+
 
 def update():
     updatesql="UPDATE plante SET partie_utilisee = 'feuilles' WHERE partie_utilisee = 'feuiles'"
@@ -24,8 +23,8 @@ def update():
 def search_plantes():
     search=input("quelle plante voulez vous ?")
     mycursor= datab.cursor()
-    sql = "SELECT * FROM plante WHERE nom = '{}' ".format(search)
-    mycursor.execute(sql)
+    sql = "SELECT * FROM plante WHERE INSTR (nom, %s) "
+    mycursor.execute(sql,(search,))
     myresult = mycursor.fetchall()
     for x in myresult:
         print(x)
